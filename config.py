@@ -4,9 +4,18 @@ Store your API keys and model settings here.
 """
 
 import os
+from pathlib import Path
+try:
+    from dotenv import load_dotenv
+    _env_path = Path(__file__).resolve().parent / ".env"
+    load_dotenv(dotenv_path=_env_path)
+except ImportError:
+    pass
 
 # ─── Gemini API Configuration ────────────────────────────────────────────────
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", "")
+if GEMINI_API_KEY:
+    os.environ["GOOGLE_API_KEY"] = GEMINI_API_KEY
 GEMINI_MODEL   = "gemini-3.8-flash"          # Fast, capable, free-tier model
 
 # ─── Server Configuration ─────────────────────────────────────────────────────
